@@ -1,0 +1,29 @@
+{
+  "name": "summon",
+  "version": "0.1.0",
+  "description": "An external dependency installer for Node.js",
+  "main": "summon.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepublish": "command -v grunt >/dev/null 2>&1 && grunt || { echo >&2 'Grunt is not installed'; }"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Impromptu/summon.git"
+  },
+  "author": "Impromptu Team (http://impromptu.sh/)",
+  "contributors": [
+    "Daryl Koopersmith (http://darylkoop.com/)",
+    "Evan Solomon (http://evansolomon.me/)"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "async": "~0.2.7"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-coffee": "~0.7.0",
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-chmod": "~1.0.3"
+  }
+}
