@@ -1,0 +1,13 @@
+#!/usr/bin/env ruby
+
+files_to_commit = `git diff --cached --name-only`.split("\n")
+exit 0 if files_to_commit.length < 2
+
+if files_to_commit.length > 1 && files_to_commit.include?('summon')
+  puts "Please commit the summon executable individually."
+  puts "It's probably best to make all of your other changes, commit them, then compile summon and commit it."
+  puts "Thanks."
+  exit 1
+end
+
+exit 0
