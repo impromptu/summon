@@ -6,6 +6,12 @@ module.exports = (grunt) ->
   grunt.initConfig
     meta:
       shebang: '#!/usr/bin/env node'
+      hacking: """
+        // Please don't edit this file directly. It is compiled from the CoffeeScript
+        // in summon.coffee. If you edit the CoffeeScript source and compile its changes,
+        // please keep the commits to this file separate. See the README for instructions
+        // on setting up a pre-commit hook to help with that.
+      """
 
     coffee:
       default:
@@ -17,7 +23,7 @@ module.exports = (grunt) ->
     # Prepend the node shebang line
     concat:
       options:
-        banner: '<%= meta.shebang %>\n'
+        banner: '<%= meta.shebang %>\n\n<%= meta.hacking %>\n\n'
       dist:
         src: 'summon'
         dest: 'summon'
