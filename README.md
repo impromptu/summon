@@ -1,6 +1,8 @@
 # Summon
 
-Summon is a command line script to help install external dependencies. It's written in Node (via CoffeeScript).
+Summon is a command line script to help install external dependencies. It's intended use case is when your project relies on dependencies that it cannot declare in its own package installer. For example, if your Node project requires Redis, you need the user to install Redis on their own. Summon's goal is to allow you to script that dependency so that the user doesn't have to think about the installation (much).
+
+Summon written in Node (via CoffeeScript).
 
 ## Hacking
 
