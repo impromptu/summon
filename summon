@@ -1,0 +1,109 @@
+#!/usr/bin/env node
+var async, exec, getPlatformInstallers, packageName, readline, runInstallCommand, tryToInstall, userInput;
+
+exec = require('child_process').exec;
+
+readline = require('readline');
+
+async = require('async');
+
+userInput = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
+
+if (process.argv.length < 3) {
+  console.log('Pass the package name you want to install as the first argument.');
+  console.log('Usage: ./install [packageName]');
+  console.log('Example: ./install git');
+  process.exit(1);
+}
+
+packageName = process.argv[2];
+
+exec("command -v " + packageName).on('exit', function(code) {
+  if (code === 0) {
+    process.exit(0);
+  }
+  console.log("You are missing " + packageName + ", which is a required dependency.");
+  return tryToInstall();
+});
+
+tryToInstall = function() {
+  return userInput.question("Do you want to try to install " + packageName + " automatically? (Y/n) ", function(answer) {
+    var installers;
+
+    if (/^n/i.test(answer)) {
+      console.log("\nPlease install " + packageName + " and then re-run this installer.");
+      process.exit(1);
+    }
+    console.log("Okay, let's try to install " + packageName + ".\n");
+    installers = getPlatformInstallers();
+    return async.filter(installers, function(installer, callback) {
+      return exec("command -v " + installer).on('exit', function(code) {
+        return callback(code === 0);
+      });
+    }, function(installers) {
+      var installer, key, _i, _len;
+
+      if (installers.length === 0) {
+        console.log("We couldn't find any package managers.");
+        console.log("Please install " + packageName + "and then re-run this installer.");
+        process.exit(1);
+      }
+      console.log("We looked for package mangers and found:");
+      for (key = _i = 0, _len = installers.length; _i < _len; key = ++_i) {
+        installer = installers[key];
+        console.log("" + (key + 1) + ") " + installer);
+      }
+      return userInput.question("\nDo you want to use one of these? Or let us know what command you prefer. (1/#/[command]) ", function(choice) {
+        if (/^\d+$/.test(choice)) {
+          installer = installers[choice - 1];
+        } else if (choice) {
+          installer = choice;
+        } else {
+          installer = installers[0];
+          console.log("Using the default installer: " + installer);
+        }
+        if (!installer) {
+          console.log('\nOops, not a valid choice.');
+          process.exit(1);
+        }
+        return runInstallCommand(packageName);
+      });
+    });
+  });
+};
+
+runInstallCommand = function(command) {
+  command = "" + installer + " install " + packageName;
+  console.log("\nOkay, going to try running: " + command + "\n");
+  return userInput.question('Good to go? (Y/n) ', function(answer) {
+    if (answer && /^n/i.test(answer)) {
+      console.log("\nOkay, we won't do it. You're on your own for installing " + packageName + ".");
+      process.exit(0);
+    }
+    return exec(command).on('exit', function(code) {
+      if (code === 0) {
+        console.log('\nAwesome, that worked! Enjoy!');
+        return process.exit(0);
+      } else {
+        console.log("\nUh oh, looks like that didn't work.");
+        console.log("Please install " + packageName + " and then re-run this installer.");
+        return process.exit(1);
+      }
+    });
+  });
+};
+
+getPlatformInstallers = function() {
+  if (process.platform === "linux" && process.arch === "x64") {
+    return ["apt-get", "yum"];
+  } else if (process.platform === "darwin") {
+    return ["brew", "port", "fink"];
+  } else if (process.platform === "win32") {
+    return ["apt-cyg"];
+  } else {
+    return [];
+  }
+};

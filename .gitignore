@@ -1,5 +1,2 @@
 *.js
 node_modules
-
-# Don't check in the compiled executable
-summon
