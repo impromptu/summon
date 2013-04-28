@@ -18,8 +18,12 @@ if process.argv.length < 3
 # This is the thing we want to install
 packageName = process.argv[2]
 
+# Optionally provide a different command to test for
+# Useful if packages have different names than commands, like redis/redis-server
+testCommand = process.argv[3] || packageName
+
 # Check to see if the package is already installed
-exec("command -v #{packageName}").on 'exit', (code) ->
+exec("command -v #{testCommand}").on 'exit', (code) ->
   # You already have the package installed, good job
   process.exit 0 if code is 0
 
