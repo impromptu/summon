@@ -5,7 +5,7 @@
 // please keep the commits to this file separate. See the README for instructions
 // on setting up a pre-commit hook to help with that.
 
-var async, exec, getPlatformInstallers, packageName, readline, runInstallCommand, tryToInstall, userInput;
+var async, exec, getPlatformInstallers, packageName, readline, runInstallCommand, testCommand, tryToInstall, userInput;
 
 exec = require('child_process').exec;
 
@@ -27,7 +27,9 @@ if (process.argv.length < 3) {
 
 packageName = process.argv[2];
 
-exec("command -v " + packageName).on('exit', function(code) {
+testCommand = process.argv[3] || packageName;
+
+exec("command -v " + testCommand).on('exit', function(code) {
   if (code === 0) {
     process.exit(0);
   }
