@@ -52,11 +52,11 @@ tryToInstall = ->
       # If we couldn't find a package manager, let the user do it themselves
       if installers.length is 0
         console.log "We couldn't find any package managers."
-        console.log "Please install #{packageName}and then re-run this installer."
+        console.log "Please install #{packageName} and then re-run this installer."
         process.exit 1
 
-      # Show a list of package managers that should be availabe
-      console.log "We looked for package mangers and found:"
+      # Show a list of package managers that should be available
+      console.log "We looked for package managers and found:"
       console.log "#{key + 1}) #{installer}" for installer, key in installers
 
       # Give the user a choice of which one to use
