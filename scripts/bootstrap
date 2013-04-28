@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+if [[ -n "$npm_package_name" && "$npm_package_name" != "summon" ]]; then
+  exit 0;
+fi
+
 PROJECT_DIR=$(git rev-parse --show-toplevel)
 cd $PROJECT_DIR
 
