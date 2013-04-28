@@ -57,7 +57,7 @@ tryToInstall = ->
 
       # Show a list of package managers that should be available
       console.log "We looked for package managers and found:"
-      console.log "#{key + 1}) #{installer}" for installer, key in installers
+      console.log "#{index + 1}) #{installer}" for installer, index in installers
 
       # Give the user a choice of which one to use
       # Defaults to the first
