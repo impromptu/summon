@@ -50,17 +50,17 @@ tryToInstall = function() {
         return callback(code === 0);
       });
     }, function(installers) {
-      var installer, key, _i, _len;
+      var index, installer, _i, _len;
 
       if (installers.length === 0) {
         console.log("We couldn't find any package managers.");
-        console.log("Please install " + packageName + "and then re-run this installer.");
+        console.log("Please install " + packageName + " and then re-run this installer.");
         process.exit(1);
       }
-      console.log("We looked for package mangers and found:");
-      for (key = _i = 0, _len = installers.length; _i < _len; key = ++_i) {
-        installer = installers[key];
-        console.log("" + (key + 1) + ") " + installer);
+      console.log("We looked for package managers and found:");
+      for (index = _i = 0, _len = installers.length; _i < _len; index = ++_i) {
+        installer = installers[index];
+        console.log("" + (index + 1) + ") " + installer);
       }
       return userInput.question("\nDo you want to use one of these? Or let us know what command you prefer. (1/#/[command]) ", function(choice) {
         if (/^\d+$/.test(choice)) {
