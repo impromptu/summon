@@ -76,9 +76,9 @@ tryToInstall = ->
           process.exit 1
 
         # Build and run the command
-        runInstallCommand packageName
+        runInstallCommand installer, packageName
 
-runInstallCommand = (command) ->
+runInstallCommand = (installer, command) ->
   command = "#{installer} install #{packageName}"
 
   # Let the user know what we're about to do
