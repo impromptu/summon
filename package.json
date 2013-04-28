@@ -8,6 +8,9 @@
     "install": "./scripts/bootstrap",
     "prepublish": "command -v grunt >/dev/null 2>&1 && grunt || { echo >&2 'Grunt is not installed'; }"
   },
+  "bin": {
+    "summon": "./summon"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/Impromptu/summon.git"
