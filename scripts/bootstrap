@@ -7,7 +7,7 @@ cd $PROJECT_DIR
 if [ -f "$PROJECT_DIR/.git/hooks/pre-commit" ]; then
 	echo
 	echo
-	read -p "You have a Git pre-commit script, can we overwrite it? " yn
+	read -p "You have a Git pre-commit script, can we overwrite it? (y/N)" yn
 	case $yn in
 		[Yy]* ) echo "Okay, overwriting it.";;
 		[Nn]* ) exit 0;;
