@@ -75,13 +75,13 @@ tryToInstall = function() {
           console.log('\nOops, not a valid choice.');
           process.exit(1);
         }
-        return runInstallCommand(packageName);
+        return runInstallCommand(installer, packageName);
       });
     });
   });
 };
 
-runInstallCommand = function(command) {
+runInstallCommand = function(installer, command) {
   command = "" + installer + " install " + packageName;
   console.log("\nOkay, going to try running: " + command + "\n");
   return userInput.question('Good to go? (Y/n) ', function(answer) {
