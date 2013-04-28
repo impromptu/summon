@@ -1,4 +1,10 @@
 #!/usr/bin/env node
+
+// Please don't edit this file directly. It is compiled from the CoffeeScript
+// in summon.coffee. If you edit the CoffeeScript source and compile its changes,
+// please keep the commits to this file separate. See the README for instructions
+// on setting up a pre-commit hook to help with that.
+
 var async, exec, getPlatformInstallers, packageName, readline, runInstallCommand, tryToInstall, userInput;
 
 exec = require('child_process').exec;
