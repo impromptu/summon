@@ -11,8 +11,8 @@ userInput = readline.createInterface
 # Make sure you gave us a package to install, otherwise exit with an error
 if process.argv.length < 3
   console.log 'Pass the package name you want to install as the first argument.'
-  console.log 'Usage: ./install [packageName]'
-  console.log 'Example: ./install git'
+  console.log 'Usage: ./summon [packageName]'
+  console.log 'Example: ./summon git'
   process.exit 1
 
 # This is the thing we want to install
@@ -105,7 +105,7 @@ runInstallCommand = (installer, command) ->
       else
         console.log "\nUh oh, looks like that didn't work."
         console.log "Please install #{packageName} and then re-run this installer."
-        process.exit 1
+        process.exit code
 
 # Try to make some reasonable guesses at what package managers might be available
 # We'll check that each is installed before offering it
