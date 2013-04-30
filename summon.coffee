@@ -105,7 +105,7 @@ runInstallCommand = (installer, command) ->
       else
         console.log "\nUh oh, looks like that didn't work."
         console.log "Please install #{packageName} and then re-run this installer."
-        process.exit 1
+        process.exit code
 
 # Try to make some reasonable guesses at what package managers might be available
 # We'll check that each is installed before offering it
