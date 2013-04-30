@@ -11,8 +11,8 @@ userInput = readline.createInterface
 # Make sure you gave us a package to install, otherwise exit with an error
 if process.argv.length < 3
   console.log 'Pass the package name you want to install as the first argument.'
-  console.log 'Usage: ./install [packageName]'
-  console.log 'Example: ./install git'
+  console.log 'Usage: ./summon [packageName]'
+  console.log 'Example: ./summon git'
   process.exit 1
 
 # This is the thing we want to install
