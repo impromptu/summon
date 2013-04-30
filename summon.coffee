@@ -2,6 +2,11 @@
 exec     = require('child_process').exec
 readline = require 'readline'
 async    = require 'async'
+nopt     = require 'nopt'
+
+options = nopt
+  testCommand: [String]
+  manager: [Array, String]
 
 # We're going to ask the user some questions
 userInput = readline.createInterface
@@ -9,18 +14,18 @@ userInput = readline.createInterface
   output : process.stdout
 
 # Make sure you gave us a package to install, otherwise exit with an error
-if process.argv.length < 3
+unless options.argv.remain.length > 0
   console.log 'Pass the package name you want to install as the first argument.'
   console.log 'Usage: ./summon [packageName]'
   console.log 'Example: ./summon git'
   process.exit 1
 
 # This is the thing we want to install
-packageName = process.argv[2]
+packageName = options.argv.remain[0]
 
 # Optionally provide a different command to test for
 # Useful if packages have different names than commands, like redis/redis-server
-testCommand = process.argv[3] || packageName
+testCommand = if options.testCommand then options.testCommand else packageName
 
 # Check to see if the package is already installed
 exec("command -v #{testCommand}").on 'exit', (code) ->
@@ -83,7 +88,9 @@ tryToInstall = ->
         runInstallCommand installer, packageName
 
 runInstallCommand = (installer, command) ->
-  command = "#{installer} install #{packageName}"
+  _package = if options[installer] then options[installer] else packageName
+
+  command = "#{installer} install #{_package}"
 
   # Let the user know what we're about to do
   console.log "\nOkay, going to try running: #{command}\n"
