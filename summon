@@ -27,8 +27,8 @@ userInput = readline.createInterface({
 
 if (!(options.argv.remain.length > 0)) {
   console.log('Pass the package name you want to install as the first argument.');
-  console.log('Usage: ./install [packageName]');
-  console.log('Example: ./install git');
+  console.log('Usage: ./summon [packageName]');
+  console.log('Example: ./summon git');
   process.exit(1);
 }
 
@@ -108,7 +108,7 @@ runInstallCommand = function(installer, command) {
       } else {
         console.log("\nUh oh, looks like that didn't work.");
         console.log("Please install " + packageName + " and then re-run this installer.");
-        return process.exit(1);
+        return process.exit(code);
       }
     });
   });
