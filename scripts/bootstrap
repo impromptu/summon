@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-if [[ -n "$npm_package_name" && "$npm_package_name" != "summon" ]]; then
+if [ "$npm_package_name" != "summon" ] && [ "$npm_package_name" != "" ]; then
   exit 0;
 fi
 
