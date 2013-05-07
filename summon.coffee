@@ -1,5 +1,6 @@
 # Get some Node magic
 exec     = require('child_process').exec
+spawn    = require('child_process').spawn
 readline = require 'readline'
 async    = require 'async'
 nopt     = require 'nopt'
@@ -102,17 +103,26 @@ runInstallCommand = (installer, command) ->
       process.exit 0
 
     # Time to do this thing. Run the install command
-    exec(command).on 'exit', (code) ->
-      # If it worked, tell the user
-      if code is 0
-        console.log '\nAwesome, that worked! Enjoy!'
-        process.exit 0
+    userInput.question 'Does this command need sudo? (y/N) ', (maybe_sudo) ->
+      command = "sudo #{command}" if /^y(es)?$/i.test maybe_sudo
+      install = spawn command.split(' ')[0], command.split(' ').slice(1)
 
-      # If it failed, let the user know and exit with an error code
-      else
-        console.log "\nUh oh, looks like that didn't work."
-        console.log "Please install #{packageName} and then re-run this installer."
-        process.exit code
+      # Pipe input/output back and forth
+      install.stdout.pipe process.stdout, {end: false}
+      process.stdin.resume()
+      process.stdin.pipe install.stdin, {end: false}
+
+      install.on 'close', (code) ->
+        # If it worked, tell the user
+        if code is 0
+          console.log '\nAwesome, that worked! Enjoy!'
+          process.exit 0
+
+        # If it failed, let the user know and exit with an error code
+        else
+          console.log "\nUh oh, looks like that didn't work."
+          console.log "Please install #{packageName} and then re-run this installer."
+          process.exit code
 
 # Try to make some reasonable guesses at what package managers might be available
 # We'll check that each is installed before offering it
