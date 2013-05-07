@@ -1,12 +1,11 @@
 {
   "name": "summon",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "An external dependency installer for Node.js",
   "main": "summon",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "install": "./scripts/bootstrap",
-    "prepublish": "command -v grunt >/dev/null 2>&1 && grunt || { echo >&2 'Grunt is not installed'; }"
+    "prepublish": "command -v grunt >/dev/null 2>&1 && grunt || { echo >&2 'Grunt is not installed'; } && ./scripts/bootstrap"
   },
   "bin": {
     "summon": "./summon"
