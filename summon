@@ -5,9 +5,11 @@
 // please keep the commits to this file separate. See the README for instructions
 // on setting up a pre-commit hook to help with that.
 
-var async, exec, getPlatformInstallers, nopt, options, packageName, readline, runInstallCommand, testCommand, tryToInstall, userInput;
+var async, exec, getPlatformInstallers, nopt, options, packageName, readline, runInstallCommand, spawn, testCommand, tryToInstall, userInput;
 
 exec = require('child_process').exec;
+
+spawn = require('child_process').spawn;
 
 readline = require('readline');
 
@@ -101,15 +103,30 @@ runInstallCommand = function(installer, command) {
       console.log("\nOkay, we won't do it. You're on your own for installing " + packageName + ".");
       process.exit(0);
     }
-    return exec(command).on('exit', function(code) {
-      if (code === 0) {
-        console.log('\nAwesome, that worked! Enjoy!');
-        return process.exit(0);
-      } else {
-        console.log("\nUh oh, looks like that didn't work.");
-        console.log("Please install " + packageName + " and then re-run this installer.");
-        return process.exit(code);
+    return userInput.question('Does this command need sudo? (y/N) ', function(maybe_sudo) {
+      var install;
+
+      if (/^y(es)?$/i.test(maybe_sudo)) {
+        command = "sudo " + command;
       }
+      install = spawn(command.split(' ')[0], command.split(' ').slice(1));
+      install.stdout.pipe(process.stdout, {
+        end: false
+      });
+      process.stdin.resume();
+      process.stdin.pipe(install.stdin, {
+        end: false
+      });
+      return install.on('close', function(code) {
+        if (code === 0) {
+          console.log('\nAwesome, that worked! Enjoy!');
+          return process.exit(0);
+        } else {
+          console.log("\nUh oh, looks like that didn't work.");
+          console.log("Please install " + packageName + " and then re-run this installer.");
+          return process.exit(code);
+        }
+      });
     });
   });
 };
